@@ -12,9 +12,9 @@ from utils import send_text_message
 
 load_dotenv()
 
-
+#12
 machine = TocMachine(
-    states=["user", "state1", "state2", "state3"],
+    states=["user", "state1", "state2", "state3", "statefin"],
     transitions=[
         {
             "trigger": "advance",
@@ -30,11 +30,21 @@ machine = TocMachine(
         },
         {
             "trigger": "advance",
-            "source": "user",
-            "dest": "state3",
+            "source": ["state1", "state2", "state3"],
+            "dest": "statefin",
             "conditions": "is_going_to_state3",
         },
-        {"trigger": "go_back", "source": ["state1", "state2", "state3"], "dest": "user"},
+        {
+            "trigger": "advance",
+            "source": "state1",
+            "dest": "statefin",
+            "conditions": "is_going_to_statefin",
+        },
+        {
+            "trigger": "go_back", 
+            "source": "statefin", 
+            "dest": "user"
+        },
     ],
     initial="user",
     auto_transitions=False,
